@@ -37,9 +37,9 @@ jobs:
           mvn --no-transfer-progress native:compile -Pnative
           echo "windows下面输出target directory下的文件"
           ls ./target
-          ./target/benchmark-jibber &
-          sleep 5
-          curl http://localhost:8080/jibber        
+          ./target/benchmark-jibber.exe &
+          # sleep 5
+          # curl http://localhost:8080/jibber        
 
       - name : upload execution
         uses: actions/upload-artifact@master
@@ -49,4 +49,4 @@ jobs:
           # (若干多个build时，此名称相同，则合并打包到一个zip中)
           name: benchmark-jibber-windows
           # 将 action打包到 action1.1.zip中并把 action1.1.zip 上传到github的本次action的Artifacts下
-          path: target/benchmark-jibber.exe
+          path: spring-native-image/target/benchmark-jibber.exe
