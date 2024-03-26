@@ -50,4 +50,4 @@ jobs:
           name: benchmark-jibber-windows
           # 将 action打包到 action1.1.zip中并把 action1.1.zip 上传到github的本次action的Artifacts下
           #path: spring-native-image/target/benchmark-jibber.exe
-          path: ${{ github.workspace }}/action 
+          path: ${{ github.workspace }}/spring-native-image/target/benchmark-jibber.exe
