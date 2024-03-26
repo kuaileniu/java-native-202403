@@ -41,26 +41,12 @@ jobs:
           sleep 5
           curl http://localhost:8080/jibber        
 
-        # 第三步：发布 Release
-      - name: Create Release # 创建Release，可以在仓库看到一个个版本
-        id: create_release
-        uses: actions/create-release@master
-        env:
-            GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }} # 之前GitHub添加的Token
+      - name : upload execution
+        uses: actions/upload-artifact@master
+        if: always()
         with:
-            tag_name: ${{ github.ref }} # (tag)标签名称
-            release_name: Release ${{ github.ref }}
-            draft: false # 是否是草稿
-            prerelease: false # 是否是预发布
-
-        # 第四步：上传构建结果到 Release（把打包的tgz上传到Release）
-      - name: Upload Release Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@master
-        env:
-            GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        with:
-            upload_url: ${{ steps.create_release.outputs.upload_url }} # 上传地址，通过创建Release获取到的
-            asset_path: ./release.tgz # 要上传文件
-            asset_name: release.tgz # 上传后的文件名
-            asset_content_type: application/x-tgz
+          # zip压缩包的名称为 action1.1.zip(使用的go module 默认名称)
+          # (若干多个build时，此名称相同，则合并打包到一个zip中)
+          name: benchmark-jibber-windows
+          # 将 action打包到 action1.1.zip中并把 action1.1.zip 上传到github的本次action的Artifacts下
+          path: target/benchmark-jibber.exe
