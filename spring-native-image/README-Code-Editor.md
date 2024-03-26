@@ -1,7 +1,6 @@
 # Spring Boot Microservice with Oracle GraalVM in OCI Code Editor
 
 
-
 This part shows how you can get started quickly with Oracle GraalVM in Oracle Cloud Infrastructure (OCI) Code Editor using the Spring Boot 3 microservice example.
 
 Oracle GraalVM is available for use on Oracle Cloud Infrastructure (OCI) at no additional cost.

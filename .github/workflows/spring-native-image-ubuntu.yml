@@ -1,0 +1,53 @@
+name: spring-native-image
+on:
+  push:
+    paths:
+      - 'spring-native-image/**'
+      - '.github/workflows/spring-native-image-ubuntu.yml'
+  # pull_request:
+  #   paths:
+  #     - 'spring-native-image/**'
+  #     - '.github/workflows/spring-native-image-ubuntu.yml'
+  schedule:
+    - cron: "0 0 1 * *" # run every month
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  run:
+    name: Run 'spring-native-graal-ubuntu'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      matrix:
+        java-version: ['21', 'dev']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: ${{ matrix.java-version }}
+          distribution: 'graalvm'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          cache: 'maven'
+          native-image-job-reports: 'true'
+      - name: Run 'spring-native-image'
+        run: |
+          cd spring-native-image
+          mvn --no-transfer-progress package
+          mvn --no-transfer-progress native:compile -Pnative
+          echo "windows下面输出target directory下的文件"
+          ls ./target
+          ./target/benchmark-jibber &
+          # sleep 5
+          # curl http://localhost:8080/jibber        
+
+      - name : upload execution
+        uses: actions/upload-artifact@master
+        if: always()
+        with:
+          # zip压缩包的名称为 action1.1.zip(使用的go module 默认名称)
+          # (若干多个build时，此名称相同，则合并打包到一个zip中)
+          name: benchmark-jibber-ubuntu
+          # 将 action打包到 action1.1.zip中并把 action1.1.zip 上传到github的本次action的Artifacts下
+          #path: spring-native-image/target/benchmark-jibber
+          path: ${{ github.workspace }}/spring-native-image/target/benchmark-jibber
