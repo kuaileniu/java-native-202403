@@ -3,11 +3,11 @@ on:
   push:
     paths:
       - 'spring-native-image/**'
-      - '.github/workflows/spring-native-image.yml'
+      - '.github/workflows/spring-native-image-windows.yml'
   pull_request:
     paths:
       - 'spring-native-image/**'
-      - '.github/workflows/spring-native-image.yml'
+      - '.github/workflows/spring-native-image-windows.yml'
   schedule:
     - cron: "0 0 1 * *" # run every month
   workflow_dispatch:
