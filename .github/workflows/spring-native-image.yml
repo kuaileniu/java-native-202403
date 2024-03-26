@@ -15,7 +15,7 @@ permissions:
   contents: read
 jobs:
   run:
-    name: Run 'spring-native-graal'
+    name: Run 'spring-native-graal-ubuntu'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     strategy:
@@ -35,6 +35,32 @@ jobs:
           cd spring-native-image
           mvn --no-transfer-progress package
           mvn --no-transfer-progress native:compile -Pnative
+          ls ./target
           ./target/benchmark-jibber &
           sleep 5
           curl http://localhost:8080/jibber
+  run:
+    name: Run 'spring-native-graal-windows'
+    runs-on: windows-latest
+    timeout-minutes: 20
+    strategy:
+      matrix:
+        java-version: ['21', 'dev']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: ${{ matrix.java-version }}
+          distribution: 'graalvm'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          cache: 'maven'
+          native-image-job-reports: 'true'
+      - name: Run 'spring-native-image'
+        run: |
+          cd spring-native-image
+          mvn --no-transfer-progress package
+          mvn --no-transfer-progress native:compile -Pnative
+          ls ./target
+          ./target/benchmark-jibber &
+          sleep 5
+          curl http://localhost:8080/jibber        
