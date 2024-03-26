@@ -64,3 +64,4 @@ jobs:
           ./target/benchmark-jibber &
           sleep 5
           curl http://localhost:8080/jibber        
+
