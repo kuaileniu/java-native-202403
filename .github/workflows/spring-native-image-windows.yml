@@ -35,6 +35,7 @@ jobs:
           cd spring-native-image
           mvn --no-transfer-progress package
           mvn --no-transfer-progress native:compile -Pnative
+          echo "windows下面输出target directory下的文件"
           ls ./target
           ./target/benchmark-jibber &
           sleep 5
