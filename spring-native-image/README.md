@@ -1,5 +1,6 @@
 # Spring Boot Native Image Microservice
 
+
 This demo shows how to build, package, and run a simple Spring Boot 3 microservice from a JAR file with the GraalVM JDK, and from a native executable with GraalVM Native Image. The benefits of using a native executable are faster start-up times and reduced memory consumption. It also demonstrates how to run the application and build the native executable within a Docker container.
 
 There are two ways to generate a native executable from a Spring Boot application:
